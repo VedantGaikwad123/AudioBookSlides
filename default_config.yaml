@@ -1,0 +1,120 @@
+# This config file can be copied to books\<bookname>\<bookname>.yaml and any keys there will over ride the key here. actors for example.
+# Prompts for generating images. 
+Pos: " [caucasian], (fantastical), (best quality), (perfect details), (professional photo) "
+Neg: " shirtless, painting, monochrome, freckles, asian, bad quality, low quality, low face detail, low resolution, bad anatomy "
+
+# If image_generator is ComfyUI, folder containing ComfyUI generated images. You must start ComfyUI prior to generating images.
+# You must change the path below or you must rename the "output" images folder to <bookname> when image generation is complete
+path_to_comfyui: "H:\\ComfyUI\\<bookname>"
+
+# If image_generator is A1111, folder containing generated A1111 images. 
+# You can either change the path below, or rename the YYYY-MM-DD images folder to <bookname> when image generation is complete.
+# You must start A111, configure the UI, and select "Input from text or file" under the Scripts selector at the bottom, then drag+drop <bookname>_p_final.txt into the upload box, then wait for images to be generated.
+# I have provided a sample A1111.PNG file that you can import to load reasonable defaults.
+path_to_stablediffusion: "H:\\SD\\stable-diffusion-webui\\outputs\\txt2img-images\\<bookname>"
+
+# Workflow file name (only used for ComfyUI). I have provided a few sample workflows. The default positive prompt must start with " Pos: ", negative prompt must start with " Neg: ". model, seed, width, height, steps, cfg and prompt will be auto-generated
+# eg. Turbo_dpm_Face_API.json" or OpenDalle_Face_Api.json. Workflow may need to be configured correctly for Turbo or non Turbo. You can create ComfyUI workflow json files by clicking Save as API from the manager menu.
+#path_to_workflow: "OpenDalle_Face_Api.json"
+#path_to_workflow: "Turbo_gpu_Face_API.json"
+#path_to_workflow: "LCM_1Face_API.json"
+path_to_workflow: "Photon_1Face_Api.json"
+
+# Configuration for the image generation process. 
+#These values 2,8 are appropriate for workflow "Turbo_dpm_Face_API.json". 
+#OpenDalle_Face_Api.json will prefer values like 6, 35, and be much slower, but better quality, photon_v1 = 5.5,20, LCM_1Face_API=1.9, 5
+cfg: 5.5
+steps: 20
+
+# Image generation settings. The generated output video will be this size.  Larger is slower.  Default 768x512  
+# Create a resized_images folder and use ffmpeg to resize images if you prefer larger; 
+#     for %%f in (*.png) do (ffmpeg -hide_banner -i "%%f" -vf scale=1152:768 "resized_images\%%~nxf")
+# Increasing the image size below will tend to just add a duplicate of a particular actor on-screen
+image_width: 768
+image_height: 512
+
+#How many images to generate with ComfyUI. Set to 0 to process all images. 
+#This lets you run a small test sample to comfirn you are happy with styles and quality settings.  (Or you can just kill the image server. The queue will reset when restarted.)
+#The output video would still be as long as the audio book regardless of this setting if you continued to process the images.  Default 0
+image_count: 0
+
+#When generating actor name replacements, this setting controls the minimum number of times a name must occur in the book to be included in the default replacement list.
+#You may want to change it to 1 and manually delete any entries you do not wish to assign to an actor.  See README.md for more tips about actors.  Default 3
+depth: 3
+
+#-------------------------- Less Common Edits -------------------------------
+
+#whisperX is required to generate .srt subtitle file.
+#Currently the same app. Support alternatives. eg. whisper-faster.exe (which is actually not faster)
+whisperx_win: "whisperx --model large-v2 --align_model WAV2VEC2_ASR_LARGE_LV60K_960H --max_line_count 1 --verbose False --output_format srt --language en --output_dir "
+whisperx_linux: "whisperx --model large-v2 --align_model WAV2VEC2_ASR_LARGE_LV60K_960H --max_line_count 1 --verbose False --output_format srt --language en --output_dir "
+
+# Sample actresses and actors. You can create custom csv files in the book folder and change this yaml file to point to those. 
+# I replace characters with actors in order to have consistent character appearences. 
+# You may create custom actors files by creating a books\<bookname>\<bookname>.yaml file with these keys which point to csv files in the <bookname> folder.
+actors: actors\\male.csv
+actresses: actors\\female.csv
+
+# Paths to various dependencies and models
+# Must be either ComfyUI or A1111
+image_generator: "ComfyUI"
+
+# You must download the model files to your SD model folder. You can find them here https://civitai.com/
+# Model name. eg. "OpenDalleV1.1.safetensors" or "RealitiesEdgeXLLCM_TURBOXL.safetensors"
+# For A1111 the user will have to manually configre it in the web-ui
+# picx_10 and dreamshaper_8LCM are LCM
+#comfyui_model: "chilloutmix_NiPrunedFp32Fix.safetensors"
+#comfyui_model: "dreamshaper_8LCM.safetensors"
+#comfyui_model: "ishtarsGateNSFWSFW_v10TurboBoosted.safetensors"
+#comfyui_model: "OpenDalleV1.1.safetensors"
+#comfyui_model: "photon_v1.safetensors"
+#comfyui_model: "picx_10.safetensors"
+#comfyui_model: "RealitiesEdgeXLLCM_TURBOXL.safetensors"
+#comfyui_model: "RealitiesEdgeXLSDXL_TURBOXLV2.safetensors"
+#comfyui_model: "realvisxlV30Turbo_v30TurboBakedvae.safetensors"
+#comfyui_model: "socababesTurboXL_v12Hybrid.safetensors"
+#comfyui_model: "turbovisionxlSuperFastXLBasedOnNew_tvxlV32Bakedvae.safetensors"
+#comfyui_model: "rundiffusionFX_v10.safetensors"
+#comfyui_model: "realisticVisionV51_v51VAE.safetensors"
+comfyui_model: "photon_v1.safetensors"
+
+# Workflow file name (only used for ComfyUI). I have provided a few sample workflows. The default positive prompt must start with " Pos: ", negative prompt must start with " Neg: ". model, seed, width, height, steps, cfg and prompt will be auto-generated
+# eg. Turbo_dpm_Face_API.json" or OpenDalle_Face_Api.json. Workflow may need to be configured correctly for Turbo or non Turbo. You can create ComfyUI workflow json files by enabling Developer mode in settings then clicking Save as API from the manager menu.
+#path_to_workflow: "LCM_1Face_API.json"
+#path_to_workflow: "OpenDalle_Face_Api.json"
+#path_to_workflow: "Photon_1Face_Api.json"
+#path_to_workflow: "Turbo_gpu_Face_API.json"
+#path_to_workflow: "Turbo_dpm_Face_API.json"
+path_to_workflow: "Photon_1Face_Api.json"
+
+# Get character names, scenes, and image prompts from AI Language model. You can use free LM-Studio or OpenAI.  
+# For a 12 hour audio book, OpenAI-GPT3 costs less than $5 and it finishes in an hour minutes.  
+
+#LM-Studio must be running and Local Server mode must be started.  I recommend this model https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.1-GGUF  ( mistral-7b-instruct-v0.1.Q6_K.gguf )
+#**** I may need to update a few scripts to run with LMS. I have not tested the most recent prompts with LMS ****
+#api_base: "http://localhost:1234/v1"
+
+#output video_format must be "mp4" or "avi". (Default is avi)
+video_format: "mp4"
+
+#Stable Diffusion will not usually place multiple named characters together on an image.  Every face tends to be the identical face.  
+#keep_actors will remove all but n actors from a scene. Enter 99 to have no practical limit. Enter 0 to keep all UNIQUE actors. 
+#Duplicates will still be removed. A list of actors removed can be found in bookname\remove.log  Default 1   
+keep_actors: 1
+
+#if keep_actors is enabled you can select the priority for which characters to keep.  I like creature because for sci-fi I spend more time crafting descriptions
+#of creatures and hate to see them on the cuttimg-room-floor, so-to-speak.  Most if the books I read have male protoganists, so I prefer to get a few more female on-screen.
+actor_priority: "creature, actress, actor"
+
+#If use_speech_verbs is 1 (default) then character detection will require potential character names be followed by one of 500 possible verbs that commonly follow a persons name.  Set to 0 to remove the restriction (may help discover characters previously omitted)
+use_speech_verbs: 1
+
+#If use_dictionary is 1 (default) then character detection will check a dictionary file tokenizer_vocab_2.txt for the presence of the character name. If found, the character will be skipped. This file was generated from an english dictionary from which names were removed 
+#which occured in thousands of U.S. baby names, names from census data, names of actors and celebrities, and known names from audio books.  Set to 0 to remove the restriction (may help discover characters previously omitted)
+use_dictionary: 1
+
+# LUFS_target specifies the desired loudness level for audio files in LUFS (Loudness Units Full Scale).
+# The EBU R128 standard recommends -23 LUFS for broadcast in Europe.  I found -17 is more appropriate for me.
+# Set this value according to your needs, or comment it out to disable volume checking and normalization.
+# If you are hard-of-hearing this may also be of assistance.
+#LUFS_target: -17
